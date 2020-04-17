@@ -1,0 +1,71 @@
+﻿@model IdentityExample1.Models.AccountViewModels.LoginViewModel
+@using Identity.Dapper.Entities
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<DapperIdentityUser> SignInManager
+@inject UserManager<DapperIdentityUser> UserManager
+
+@{
+    ViewData["Title"] = "Search";
+    List<UserTasks> Tasks = (List<UserTasks>)ViewData["Tasks"];
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <h1>Search</h1>
+    </div>
+    <div class="col-md-6 search-form">
+        <form asp-controller="Task" asp-action="Search" method="post">
+            <input type="search" id="Search" name="Search" />
+
+            <input type="submit" value="Search" />
+        </form>
+    </div>
+</div>
+
+@foreach (UserTasks t in Tasks)
+{
+    if (t.Complete == 1)
+    {
+        <hr style="clear: both" />
+
+        <p>
+            Task# @t.TaskId<br />
+            Owned By User: <strong>@t.OwnerId</strong>
+        </p>
+        <p>
+            @t.Description
+        </p>
+        <p>Due: @t.DueDate</p>
+
+        <a href="/Task/MarkComplete/@t.TaskId" class="btn btn-primary">Mark Complete</a>
+        <a href="/Task/Edit/@t.TaskId" class="btn btn-success">Edit Task</a>
+        <a href="/Task/DeleteTask/@t.TaskId" class="btn btn-danger delete">Delete</a>
+        
+        <hr />
+    }
+
+}
+
+<h2>Closed Tasks</h2>
+@foreach (UserTasks t in Tasks)
+{
+    if (t.Complete == 0)
+    {
+        <hr />
+
+        <p>
+            Task# @t.TaskId<br />
+            Owned By User: <strong>@t.OwnerId</strong>
+        </p>
+        <p>
+            @t.Description
+        </p>
+        <p>Due: @t.DueDate</p>
+
+        <a href="/Task/DeleteTask/@t.TaskId" class="btn btn-danger">Delete</a>
+
+        <hr />
+    }
+
+}
