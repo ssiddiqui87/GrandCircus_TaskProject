@@ -79,10 +79,11 @@ namespace IdentityExample1
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            
 
             //add this to access user info in Views
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseCookiePolicy();
 
